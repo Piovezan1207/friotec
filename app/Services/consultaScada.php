@@ -26,7 +26,7 @@ class consultaScada
         // printf("\n");
         // }
 
-
+        
 
         $proxy = $cliente->getProxy();
 
