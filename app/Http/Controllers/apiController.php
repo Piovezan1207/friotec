@@ -4,42 +4,43 @@ namespace App\Http\Controllers;
 
 // include('/econea/nusoap/src/nusoap.php');
 
+use App\Http\Requests\apiFormRequest;
 use App\Services\consultaScada;
+use App\Services\setaScada;
 use Illuminate\Http\Request;
 
-
+use function App\Services\testes;
 
 class apiController extends Controller
 {
-    public function index(Request $request)
+    public function index(apiFormRequest $request)
     {   
 
-        $modelos = [
+
+        $serie = [
             "ar" => "Ar Condicionado",
             "chiller" => ""
         ];
 
-        $tipos =[
+        $pedido =[
             "temperatura" => "Temperatura Processo",
             "status" => "Liga/Desliga",
             "setpoint" => "Setpoint Processo" 
         ];
 
-        // $modelo["ar"];
-        $leitura = consultaScada::consulta($modelos[$request->modelo],$tipos[$request->tipo]);
-
-        return $leitura['itemsList']['value'];
-
-        // if($request->tipo == "temperatura")
-        // {
-
-        //     #consulta
-        // }
-    
-        // else if($request->consulta == "status")
-        // {
-        //     return "O status é...";
-        // }
+        if ($request->tipo == "leitura")
+        {
+            $leitura = consultaScada::consulta($serie[$request->serie],$pedido[$request->pedido]);
+            return $leitura['itemsList']['value'];
+        }
+        else if($request->tipo == "escrita")
+        {
+            $leitura = setaScada::setar($serie[$request->serie],$pedido[$request->pedido],$request->valor);
+            return $leitura['itemsList']['value'];
+        }
+        else{
+            return "Esse tipo não existe!";
+        }
     }
 
 }

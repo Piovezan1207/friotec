@@ -6,7 +6,7 @@ use nusoap_client;
 
 class setaScada 
 {
-    static public function setar($modelo, $var)
+    static public function setar($modelo, $var,$valor)
     {
         
         // define a localizacao do wsdl
@@ -33,6 +33,10 @@ class setaScada
         $itemPathList = array('itemPathList' => "$modelo.$var");
 
         $param = array($itemPathList);
+
+
+            
+            
 
         // Chama o metodo readData
         $result = $proxy->call('readData', $param);
